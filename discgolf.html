@@ -1,0 +1,72 @@
+<head>
+	<title>Disc Golf</title>
+	<meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+	<div id="wrap">
+		<div id="playerDetail" class="panel">
+			{{> playerDetail}}
+		</div>
+		<hr />
+		<div id="leaderboards" class="panel">
+			{{> leaderboards}}
+		</div>
+		<footer>
+			<p>App created by <a href="http://kedar-amladi.com" target="_blank">Kedar Amladi</a> with the <a href="http://meteor.com" target="_blank">Meteor</a> framework</p>
+		</footer>
+	</div>
+</body>
+
+<template name="leaderboards">
+	<h3>Leaderboards</h3>
+	<ul>
+		{{#if players}}
+			{{#each players}}
+				{{> playerListItem}}
+			{{/each}}
+		{{else}}
+			<li>No players in the game yet. Join it below!</li>
+		{{/if}}
+		<div id="newplayer">
+			<label for="name">Name: </label><br>
+			<input id="new-player-name" placeholder="Your Name"><br>
+			<input type="button" id="create-new-player-btn" value="Create">
+		</div>
+	</ul>
+</template>
+
+<template name="playerListItem">
+	<li><a href="players/{{_id}}" class="name">{{name}}</a> <span class="score">{{total_score}}</span></li>
+</template>
+
+<template name="playerDetail">
+		{{#if selectedPlayer}}
+			{{#with selectedPlayer}}
+				<header>
+					<span class="name">{{name}}</span>
+					<span class="score">Total Score: {{total_score}}</span>
+				</header>
+				{{#if is_current_player}}
+					<div id="new-score">
+						<h4>Add a New Score</h4>
+						<p>At Hole <input type="text" id="hole" placeholder="{{curr_hole_number}}"/>, I scored <input type="text" id="new-score" placeholder="{{par}}"/> throws.
+						<input type="button" id="new-score-btn" value="Add!">
+						</p>
+					</div>
+				{{/if}}
+				<h4>Scores</h4>
+				<ul class="scores">
+					{{#if holes}}
+						{{#each holes}}
+							<li>Hole {{hole_number}}: <span class="score">{{score}}</span> (Par: {{par}})</li>
+						{{/each}}
+					{{else}}
+						<li>No scores yet</li>
+					{{/if}}
+				</ul>
+			{{/with}}
+		{{else}}
+			<br /><p>Enter your name below to get started!</p>
+		{{/if}}
+</template>

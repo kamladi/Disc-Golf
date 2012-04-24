@@ -1,0 +1,114 @@
+@import "bootstrap.less";
+@darkRed: #BF1F1F;
+@darkerRed: darken(@darkRed, 20%);
+@cyan: #6AA690;
+@cream = #F2DC99;
+@blue: #1965BE;
+
+body {
+    background: @cyan;
+    color: #333;
+}
+#wrap {
+    width: 80%;
+    background: #fff;
+    display: block;
+    position: relative;
+    margin: 15px auto;
+    padding: 15px;
+    .border-radius(15px);
+    .box-shadow(0, 0, 10px, #333);
+    footer {
+        color: #666;
+        .clearleft;
+        margin-top: 100px;
+        padding: 10px 25px;
+        p {
+            font-size: 12px;
+            a {
+                font-size: inherit;
+                color: #666;
+                text-decoration: underline;
+            }
+        }
+        
+    }
+}
+
+
+#playerDetail {
+    font-size: 18px;
+    min-width: 200px;
+    margin-bottom: 25px;
+    header {
+        margin-bottom: 15px;
+        .name {
+            color: @darkRed;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .score {
+            color: #666;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+    }
+    h4 {
+        margin: 15px 0px 5px;
+    }
+    p {
+        padding: 0px 10px;
+    }
+    #add-new-score {
+        .gradient(@darkRed, darken(@darkRed, 10%));
+        padding: 5px 20px;
+        color: #fff;
+        border: none;
+        font-size: 12px;
+        .border-radius(10px);
+    }
+    input#hole {
+        width: 50px;
+        margin-left: 8px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    ul.scores {
+        list-style-type: none;
+        margin-left: 15px;
+        .score {
+            color: DarkRed;
+            font-weight: bold;
+        }
+    }
+    input[type=text] {
+      width: 50px;
+    }
+}
+
+
+#leaderboards {
+    min-width: 200px;
+    margin-top: 25px;
+    h3 {
+        font-size: 18px;
+    }
+    ul {
+        list-style-type: none;
+        li {
+            margin: 5px 0px;
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+    a.name {
+        color: #666;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    .score {
+        color: DarkRed;
+        font-weight: bold;
+    }
+}

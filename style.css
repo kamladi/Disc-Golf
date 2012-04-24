@@ -1,0 +1,146 @@
+/*
+* DEFAULTS
+*/
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: Helvetica, Trebuchet, Arial, sans-serif;
+  font-size: 15px;
+}
+* ul,
+* ol {
+  list-style: none;
+}
+* a {
+  text-decoration: none;
+}
+/*
+* Mixins
+*/
+/* CLEARFIXES */
+.clearleft {
+  clear: left;
+}
+.clearright {
+  clear: right;
+}
+.clearboth {
+  clear: both;
+}
+/* Font Stack */
+body {
+  background: #208a8b;
+  color: #333;
+}
+#wrap {
+  width: 80%;
+  background: #fff;
+  display: block;
+  position: relative;
+  margin: 15px auto;
+  padding: 15px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  box-shadow: 0 0 10px #333333;
+  -webkit-box-shadow: 0 0 10px #333333;
+  -moz-box-shadow: 0 0 10px #333333;
+}
+#wrap footer {
+  color: #666;
+  clear: left;
+  margin-top: 100px;
+  padding: 10px 25px;
+}
+#wrap footer p {
+  font-size: 12px;
+}
+#wrap footer p a {
+  font-size: inherit;
+  color: #666;
+  text-decoration: underline;
+}
+#playerDetail {
+  font-size: 18px;
+  min-width: 200px;
+  margin-bottom: 25px;
+}
+#playerDetail header {
+  margin-bottom: 15px;
+}
+#playerDetail header .name {
+  color: #be2618;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+#playerDetail header .score {
+  color: #666;
+  font-size: 16px;
+  margin-left: 10px;
+}
+#playerDetail h4 {
+  margin: 15px 0px 5px;
+}
+#playerDetail p {
+  padding: 0px 10px;
+}
+#playerDetail #add-new-score {
+  background-color: #98c1f1;
+  background: -webkit-gradient(linear, left top, left bottom, from(#98c1f1), to(#6ba6eb));
+  background: -webkit-linear-gradient(top, #98c1f1, #6ba6eb);
+  background: -moz-linear-gradient(top, #98c1f1, #6ba6eb);
+  background: -ms-linear-gradient(top, #98c1f1, #6ba6eb);
+  background: -o-linear-gradient(top, #98c1f1, #6ba6eb);
+  padding: 5px 20px;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+}
+#playerDetail input#hole {
+  width: 50px;
+  margin-left: 8px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+#playerDetail ul.scores {
+  list-style-type: none;
+  margin-left: 15px;
+}
+#playerDetail input[type=text] {
+  width: 50px;
+}
+#leaderboards {
+  min-width: 200px;
+  margin-top: 25px;
+}
+#leaderboards h3 {
+  font-size: 18px;
+}
+#leaderboards ul {
+  list-style-type: none;
+}
+#leaderboards ul li {
+  margin: 5px 0px;
+}
+#leaderboards ul li a {
+  text-decoration: none;
+}
+#leaderboards .name {
+  color: #666;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 10px;
+}
+#leaderboards .throws {
+  color: DarkRed;
+  font-weight: bold;
+}

@@ -1,0 +1,75 @@
+/*
+* DEFAULTS
+*/
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Helvetica, Trebuchet, Arial, sans-serif;
+    font-size: 15px;
+    ul, ol {
+        list-style: none
+    }
+    a {
+        text-decoration: none;
+    }
+}
+/*
+* Mixins
+*/
+.border-radius (@radius) {
+    border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+}
+.box-shadow(@x, @y, @blur, @color) {
+    box-shadow: @x @y @blur @color;
+    -webkit-box-shadow: @x @y @blur @color;
+    -moz-box-shadow: @x @y @blur @color;
+}
+.opacity (@opacity: 0.5) {
+	-webkit-opacity: 	@opacity;
+	-moz-opacity: 		@opacity;
+	opacity: 		@opacity;
+}
+.gradient (@startColor: #eee, @endColor: white) {
+	background-color: @startColor;
+	background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+	background: -webkit-linear-gradient(top, @startColor, @endColor);
+	background: -moz-linear-gradient(top, @startColor, @endColor);
+	background: -ms-linear-gradient(top, @startColor, @endColor);
+	background: -o-linear-gradient(top, @startColor, @endColor);
+}
+.transition (@transition) {
+	-webkit-transition: @transition;
+	-moz-transition:    @transition;
+	-ms-transition:     @transition;
+	-o-transition:      @transition;
+}
+.rotate (@deg) {
+	-webkit-transform: rotate(@deg);
+	-moz-transform: 	 rotate(@deg);
+	-ms-transform: 		 rotate(@deg);
+	-o-transform: 		 rotate(@deg);
+}
+/* CLEARFIXES */
+.clearleft { clear: left; }
+.clearright { clear: right; }
+.clearboth { clear: both; }
+/* Font Stack */
+#font {
+    .sans-serif(@weight: normal, @size: 14px, @lineHeight: 20px) {
+    	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    	font-size: @size;
+    	font-weight: @weight;
+    	line-height: @lineHeight;
+    }
+    .serif(@weight: normal, @size: 14px, @lineHeight: 20px) {
+    	font-family: "Georgia", Times New Roman, Times, sans-serif;
+    	font-size: @size;
+    	font-weight: @weight;
+    	line-height: @lineHeight;
+    }
+}
