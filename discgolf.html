@@ -5,12 +5,20 @@
 
 <body>
 	<div id="wrap">
-		<div id="playerDetail" class="panel">
-			{{> playerDetail}}
-		</div>
-		<hr />
-		<div id="leaderboards" class="panel">
-			{{> leaderboards}}
+		<nav id="main-nav">
+			<ul>
+			</ul>
+		</nav>
+		<div id="panel-container">
+			<div id="panel-slider">
+				<div id="leaderboards" class="panel">
+					{{> leaderboards}}
+				</div>
+				<div id="playerDetail" class="panel">
+					{{> playerDetail}}
+				</div>
+				<div class="clearleft"></div>
+			</div>
 		</div>
 		<footer>
 			<p>App created by <a href="http://kedar-amladi.com" target="_blank">Kedar Amladi</a> with the <a href="http://meteor.com" target="_blank">Meteor</a> framework</p>
@@ -18,8 +26,9 @@
 	</div>
 </body>
 
+
 <template name="leaderboards">
-	<h3>Leaderboards</h3>
+	<h2>Leaderboards</h2>
 	<ul>
 		{{#if players}}
 			{{#each players}}
@@ -44,13 +53,13 @@
 		{{#if selectedPlayer}}
 			{{#with selectedPlayer}}
 				<header>
-					<span class="name">{{name}}</span>
+					<span class="name">{{name}}</span><br>
 					<span class="score">Total Score: {{total_score}}</span>
 				</header>
 				{{#if is_authorized_player}}
 					<div id="new-score" data-id="{{_id}}">
 						<h4>Add a New Score</h4>
-						<p>At Hole <input type="text" id="hole" placeholder="{{curr_hole_number}}"/>, I scored <input type="text" id="new-score" placeholder="{{par}}"/> throws.
+						<p>At Hole <input type="text" id="hole" placeholder="{{curr_hole_number}}"/>, I scored <input type="text" id="score" placeholder="{{par}}"/> throws.
 						<input type="button" id="new-score-btn" value="Add!">
 						</p>
 					</div>
@@ -66,6 +75,8 @@
 					{{/if}}
 				</ul>
 			{{/with}}
+			<br>
+			<button id="leaderboards-link" onclick="AppRouter.navigate('', {trigger: true});">&laquo; Back</button>
 		{{else}}
 			<br /><p>Enter your name below to get started!</p>
 		{{/if}}
