@@ -1,17 +1,23 @@
 Router = Backbone.Router.extend(
 	routes:
+		'': 'leaderboards'
 		'players/:player_id': 'main'
+	
+	leaderboards: ->
+		$('#panel-slider').animate({left: '0%'}, 250)
 	
 	main: (player_id) ->
 		Session.set "player_id", player_id
 		$('#playerDetail').attr('data-player_id', player_id)
+		$('#panel-slider').animate({left: '-100%'}, 250)
 	
 	setPlayer: (player_id) ->
-		@navigate player_id, true
+		@navigate player_id, {trigger: true}
 	
 )
 
 AppRouter = new Router
+window.AppRouter = AppRouter
 
 #object to deal with 
 authorized_players = 
@@ -55,6 +61,7 @@ Meteor.startup ->
 	else
 		alert "Welcome to the discgolf game!"
 		authorized_players.save()
+	
 
 is_authorized_player = (player_id) ->
 	return authorized_players.hasPlayer(player_id)
@@ -73,6 +80,9 @@ Template.leaderboards.events =
 		if e.keyCode and e.keyCode isnt 13
 			return false
 		name = $('input#new-player-name').val()
+		if name is ''
+			alert 'not a valid name'
+			return false
 		#check if name already exists as player
 		player = Players.findOne({name: name})
 		if player
@@ -107,7 +117,12 @@ Template.playerDetail.is_authorized_player = ->
 	return is_authorized_player Session.get('player_id')
 
 Template.playerDetail.events = 
-	'click input#new-score-btn, keypress input#new-score, keypress input#hole': (e) ->
+	'click #leaderboards-link': (e) ->
+		###
+			TODO figure out why this event handler isn't running
+		###
+		AppRouter.navigate '/', {trigger: true}
+	'click input#new-score-btn, keypress input#score, keypress input#hole': (e) ->
 		id =  $('#playerDetail').attr('data-player_id')
 		if e.keyCode and e.keyCode isnt 13
 			return false
@@ -116,7 +131,7 @@ Template.playerDetail.events =
 		if not hole_number or hole_number <= 0
 			alert 'Not a valid hole number'
 			return false
-		score = parseInt $('input#new-score').val()
+		score = parseInt $('input#score').val()
 		#validate score
 		if not score or score <= 0
 			alert 'Not a valid score'
@@ -128,7 +143,9 @@ Template.playerDetail.events =
 		
 		if not hole # hole doesn't exist yet
 			par = parseInt(window.prompt("First score for hole "+hole_number+". What is this hole's par?", "3"))
-			if not par or par <= 0
+			if not par
+				return false
+			if par and par <= 0
 				alert "not a valid par"
 				return false
 			#create new hole and add score to it
@@ -172,6 +189,7 @@ Template.playerDetail.events =
 			$inc:
 				total_score: score
 		)
+		
 	
 Template.playerDetail.holes = ->
 	scoresList = []
