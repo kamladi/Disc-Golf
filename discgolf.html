@@ -29,6 +29,11 @@
 
 <template name="leaderboards">
 	<h2>Leaderboards</h2>
+	<div id="newplayer">
+		<label for="name">Name: </label><br>
+		<input id="new-player-name" placeholder="Your Name"><br>
+		<input type="button" id="create-new-player-btn" value="Create">
+	</div>
 	<ul>
 		{{#if players}}
 			{{#each players}}
@@ -37,11 +42,7 @@
 		{{else}}
 			<li>No players in the game yet. Join it below!</li>
 		{{/if}}
-		<div id="newplayer">
-			<label for="name">Name: </label><br>
-			<input id="new-player-name" placeholder="Your Name"><br>
-			<input type="button" id="create-new-player-btn" value="Create">
-		</div>
+		
 	</ul>
 </template>
 
@@ -59,7 +60,7 @@
 				{{#if is_authorized_player}}
 					<div id="new-score" data-id="{{_id}}">
 						<h4>Add a New Score</h4>
-						<p>At Hole <input type="text" id="hole" placeholder="{{curr_hole_number}}"/>, I scored <input type="text" id="score" placeholder="{{par}}"/> throws.
+						<p>At Hole <input type="text" id="hole" placeholder="1"/>, I scored <input type="text" id="score" placeholder="3"/> throws.
 						<input type="button" id="new-score-btn" value="Add!">
 						</p>
 					</div>
