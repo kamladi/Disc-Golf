@@ -4,6 +4,7 @@ Router = Backbone.Router.extend(
 	
 	main: (player_id) ->
 		Session.set "player_id", player_id
+		$('#playerDetail').attr('data-player_id', player_id)
 	
 	setPlayer: (player_id) ->
 		@navigate player_id, true
@@ -12,21 +13,55 @@ Router = Backbone.Router.extend(
 
 AppRouter = new Router
 
+#object to deal with 
+authorized_players = 
+	array: []
+	load: ->
+		if window.localStorage.getItem('discgolf_authorized_players')
+			json = JSON.parse(window.localStorage.getItem('discgolf_authorized_players'))
+			@array = json.ids
+		Session.set 'authorized_players', @array
+	save: ->
+		window.localStorage.setItem('discgolf_authorized_players', JSON.stringify({ids: @array}))
+	isEmpty: ->
+		return @get() and @get().length > 0
+	get: ->
+		return @array
+	hasPlayer: (player_id) ->
+		for id in @array
+			if player_id is id
+				return true
+		return false
+	addPlayer: (player_id) ->
+		if @hasPlayer player_id
+			return
+		@array.push player_id
+		Session.set 'authorized_players', @array
+		@save()
+		console.log 'new player added to authorized_players list'
+		console.log @get()
+
+window.authorized_players = authorized_players
+
 Meteor.startup ->
 	Backbone.history.start pushState: true
 	#load curernt_player_id from localStorage if it exists
-	if window.localStorage['discgolf_current_player_id']
-		Session.set('current_player_id', window.localStorage['discgolf_current_player_id'])
-		AppRouter.setPlayer 'players/' + Session.get('current_player_id')
+	if window.localStorage['discgolf_authorized_players']
+		authorized_players.load()
+		console.log 'authorized players array loaded'
+		console.log authorized_players.get()
+		if not authorized_players.isEmpty()
+			AppRouter.setPlayer 'players/' + authorized_players.get()[0]
 	else
 		alert "Welcome to the discgolf game!"
+		authorized_players.save()
 
-is_current_player = (player_id) ->
-	return player_id == Session.get('current_player_id')
+is_authorized_player = (player_id) ->
+	return authorized_players.hasPlayer(player_id)
 
 #LEADERBOARDS
 Template.leaderboards.players = ->
-	Players.find({}, {
+	return Players.find({}, {
 		sort:
 			total_score: 1
 			name: 1
@@ -45,29 +80,35 @@ Template.leaderboards.events =
 			return false
 		else
 			id = Players.insert({name: name, total_score: 0});
-			Session.set('current_player_id', id)
-			localStorage['discgolf_current_player_id'] = id
+			authorized_players.addPlayer id
 			$('input#new-player-name').val('')
-			AppRouter.navigate 'players/' + id, true
+			AppRouter.setPlayer 'players/' + id
 		
 #PLAYER LIST ITEM
 Template.playerListItem.events = 
 	'click a': (e) ->
-		AppRouter.setPlayer @_id
+		id = e.target.dataset.id
+		AppRouter.setPlayer 'players/' + id
+		e.preventDefault()
 
 
 #PLAYER DETAIL VIEW
 Template.playerDetail.selectedPlayer = ->
 	player_id = Session.get('player_id')
 	if not player_id
-		player_id = Session.get 'current_player_id'
+		#for some reason authorized_players sometimes isn't defined yet, so I have to check
+		if authorized_players and not authorized_players.isEmpty()
+			player_id = authorized_players.get()[0]
+		else
+			player_id = ''
 	player = Players.findOne(player_id)
 
-Template.playerDetail.is_current_player = ->
-	return is_current_player Session.get('player_id')
+Template.playerDetail.is_authorized_player = ->
+	return is_authorized_player Session.get('player_id')
 
 Template.playerDetail.events = 
 	'click input#new-score-btn, keypress input#new-score, keypress input#hole': (e) ->
+		id =  $('#playerDetail').attr('data-player_id')
 		if e.keyCode and e.keyCode isnt 13
 			return false
 		hole_number = parseInt $('input#hole').val()
@@ -95,14 +136,14 @@ Template.playerDetail.events =
 				hole_number: hole_number
 				par: par
 				scores: [{
-					player_id: Session.get 'current_player_id'
+					player_id: id
 					score: score
 				}]
 			)
 		else # hole does exist
 			#search if score for player exists already
 			for x in hole.scores
-				if x.player_id is Session.get 'current_player_id'
+				if x.player_id is id
 					#ask for overwrite
 					confirm = window.confirm "Score already exists for hole " + hole_number + ". Overwrite?"
 					if confirm is true #player wants to overwrite
@@ -110,9 +151,9 @@ Template.playerDetail.events =
 						Holes.update({hole_number: hole_number}, {
 							$pull:
 								scores:
-									player_id: Session.get 'current_player_id'
+									player_id: id
 						})
-						Players.update(Session.get('current_player_id'), {
+						Players.update(id, {
 							$inc:
 								total_score: parseInt(score * (-1))
 						})
@@ -122,12 +163,12 @@ Template.playerDetail.events =
 			Holes.update({hole_number: hole_number}, {
 				$push:
 					scores:
-						player_id: Session.get 'current_player_id'
+						player_id: id
 						score: score
 			})
 			
 		#update Players total_score
-		Players.update(Session.get('current_player_id'),
+		Players.update(id,
 			$inc:
 				total_score: score
 		)
