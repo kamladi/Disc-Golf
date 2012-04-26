@@ -125,7 +125,7 @@ body {
 }
 #panel-container #panel-slider #playerDetail #new-score input#hole,
 #panel-container #panel-slider #playerDetail #new-score input#score {
-  width: 50px;
+  width: 20px;
 }
 #panel-container #panel-slider #playerDetail ul.scores {
   list-style-type: none;
