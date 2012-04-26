@@ -37,7 +37,7 @@
 </template>
 
 <template name="playerListItem">
-	<li><a href="players/{{_id}}" class="name">{{name}}</a> <span class="score">{{total_score}}</span></li>
+	<li><a href="#" data-id="{{_id}}" class="name">{{name}}</a> <span class="score">{{total_score}}</span></li>
 </template>
 
 <template name="playerDetail">
@@ -47,8 +47,8 @@
 					<span class="name">{{name}}</span>
 					<span class="score">Total Score: {{total_score}}</span>
 				</header>
-				{{#if is_current_player}}
-					<div id="new-score">
+				{{#if is_authorized_player}}
+					<div id="new-score" data-id="{{_id}}">
 						<h4>Add a New Score</h4>
 						<p>At Hole <input type="text" id="hole" placeholder="{{curr_hole_number}}"/>, I scored <input type="text" id="new-score" placeholder="{{par}}"/> throws.
 						<input type="button" id="new-score-btn" value="Add!">
