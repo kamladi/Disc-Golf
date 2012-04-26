@@ -4,12 +4,16 @@ Router = Backbone.Router.extend(
 		'players/:player_id': 'main'
 	
 	leaderboards: ->
-		$('#panel-slider').animate({left: '0%'}, 250)
+		$('#panel-slider').animate({left: '0%'}, 250, ->
+			$(@).find('input#new-player-name').focus()
+		)
 	
 	main: (player_id) ->
 		Session.set "player_id", player_id
 		$('#playerDetail').attr('data-player_id', player_id)
-		$('#panel-slider').animate({left: '-100%'}, 250)
+		$('#panel-slider').animate({left: '-100%'}, 250, ->
+			$(@).find('input#hole').focus()
+		)
 	
 	setPlayer: (player_id) ->
 		@navigate player_id, {trigger: true}
@@ -30,9 +34,12 @@ authorized_players =
 	save: ->
 		window.localStorage.setItem('discgolf_authorized_players', JSON.stringify({ids: @array}))
 	isEmpty: ->
-		return @get() and @get().length > 0
+		return @get().length is 0
+	reset: ->
+		@array = []
+		window.localStorage.removeItem('discgolf_authorized_players')
 	get: ->
-		return @array
+		return @array or []
 	hasPlayer: (player_id) ->
 		for id in @array
 			if player_id is id
@@ -52,12 +59,11 @@ window.authorized_players = authorized_players
 Meteor.startup ->
 	Backbone.history.start pushState: true
 	#load curernt_player_id from localStorage if it exists
-	if window.localStorage['discgolf_authorized_players']
+	storage = window.localStorage['discgolf_authorized_players']
+	if  storage or storage is ''
 		authorized_players.load()
 		console.log 'authorized players array loaded'
 		console.log authorized_players.get()
-		if not authorized_players.isEmpty()
-			AppRouter.setPlayer 'players/' + authorized_players.get()[0]
 	else
 		alert "Welcome to the discgolf game!"
 		authorized_players.save()
