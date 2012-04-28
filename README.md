@@ -23,7 +23,7 @@ That's what this app is for. Players with a smartphone can head over to <http://
 TECHINCAL DETAILS
 -----------------
 **languages:**
-  --Coffeescript
-  --HTML5
-  --CSS3 (with help from LESS)
-  --Meteor (Node.js, MongoDB, Sock.js, Backbone.js, and many more)
+- Coffeescript
+- HTML5
+- CSS3 (with help from LESS)
+- Meteor (Node.js, MongoDB, Sock.js, Backbone.js, and many more)
